@@ -7,6 +7,7 @@ router.get('/', auth,  UserController.getAll);
 router.post('/signup',  UserController.signup);
 router.post('/login',  UserController.login);
 router.delete('/delete/:id', UserController.delete);
+router.get('/logout', auth, UserController.logout);
 
 /*
 app.post('/user/crear', addUser);

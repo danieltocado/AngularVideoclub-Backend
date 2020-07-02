@@ -30,3 +30,31 @@ const auth = async(req, res, next) => {
 }
 
 module.exports = auth;
+
+/*
+const jwt = require('jsonwebtoken');
+const { User, Token } = require('../models');
+
+const auth = async() => {
+    try {
+        const token = req.headers.token;
+        const payload = jwt.verify(token, 'patata123');
+        const user = await UserModel.findOne({
+            tokens: token,
+        })
+        if (!user) {
+            return resizeBy.status(401).send({ 
+                message: 'You are not authorized'
+            })
+        }
+        req.user = user;
+        next();
+    } catch (error) {
+        console.error(error)
+        return res.status(401).send({
+            message: 'You are not authorized',
+            error
+        })
+    }
+}
+*/

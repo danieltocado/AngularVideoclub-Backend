@@ -3,13 +3,26 @@ const { Movie } = require('../models');
 const MovieController = {
     async getAllMovies(req,res) {
         try {
-            const movies = await Movie.findAll()
+            const movies = await Movie.findAll({
+                limit: 24
+            })
             res.status(200).send(movies)
             
         } catch (error) {
             console.log(error)
             res.status(500).send({ message : 'There was a problem trying to get the movies.'})
         }
+    },
+    getPage(req, res) {
+        const { page } = req.params;
+        const skip = (page - 1) * 20
+        Movie.find()
+            .skip(skip).limit(20)
+            .then(movies => res.send(movies))
+            .catch(error => {
+                console.error(error);
+                res.status(500).send({ message : 'There was a problem trying to get the movies.'})
+            })
     },
     async searchtitle(req,res) {
         try {

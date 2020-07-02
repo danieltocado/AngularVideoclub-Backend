@@ -73,7 +73,21 @@ const UserController = {
             console.log(error)
             res.status(500).send({ message : 'There was a problem login the user.'})
         }
-    } 
+    },
+    async logout(req, res) {
+        try {
+            const { id } = req.user.id
+            const user = await User.destroy({
+                where : {
+                    tokens : req.headers.authorization
+                }
+            })
+            res.status(200).send({ message : 'Succesfully logged out.'})
+        } catch (error) {
+            console.log(error)
+            res.status(500).send({ message : 'There was a problem trying to logout.'})
+        }
+    }
 }
 
 module.exports = UserController;
