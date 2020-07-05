@@ -10,7 +10,8 @@ module.exports = {
                 title: m.title,
                 overview: m.overview,
                 poster_path: m.poster_path,
-                popularity: m.popularity
+                popularity: m.popularity,
+                release_date: m.release_date
             }));
            
             return queryInterface.bulkInsert('Movies', movies, {});
