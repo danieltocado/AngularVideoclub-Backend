@@ -5,7 +5,7 @@ const MovieController = {
     async getAllMovies(req,res) {
         try {
             const movies = await Movie.findAll({
-                limit: 26
+                limit: 20
             })
             res.status(200).send(movies)
             
@@ -17,8 +17,7 @@ const MovieController = {
     getPage(req, res) {
         const { page } = req.params;
         const skip = (page - 1) * 20
-        Movie.findAll(offset(skip).limit(20))
-            
+        Movie.findAll({offset:skip,limit:20})
             .then(movies => res.send(movies))
             .catch(error => {
                 console.error(error);
@@ -69,7 +68,8 @@ const MovieController = {
                     popularity:{
                         [Op.gte] : 50
                     }
-                }
+                },
+                limit: 20,
             });
             res.status(200).send(popular)
         } catch (error) {
@@ -83,7 +83,8 @@ const MovieController = {
                     release_date:{
                         [Op.between]: ['2018-01-01', '2020-07-04']
                     }
-                }
+                },
+                limit: 20,
             });
             res.status(200).send(lastMovies)
         } catch (error) {

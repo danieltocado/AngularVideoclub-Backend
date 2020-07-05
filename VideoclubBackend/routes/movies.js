@@ -9,7 +9,7 @@ router.get('/id/:id', MovieController.searchid)
 
 router.get('/page/:page', MovieController.getPage)
 
-router.get('/mostpopular', MovieController.mostPopular);
+router.get('/popular', MovieController.mostPopular);
 router.get('/lastmovies', MovieController.lastMovies);
 
 module.exports = router
