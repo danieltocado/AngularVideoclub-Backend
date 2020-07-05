@@ -1,7 +1,7 @@
 const jwt = require('jsonwebtoken');
 const { User, Token } = require('../models');
 
-const auth = async(req, res, next) => {
+/*const auth = async(req, res, next) => {
     try {
         // token on headers.authorization
         const token = req.headers.authorization;
@@ -27,25 +27,19 @@ const auth = async(req, res, next) => {
         console.log(error);
         res.status(500).send({ message: 'You are not authorized', error})
     }
-}
+}*/
 
-module.exports = auth;
-
-/*
-const jwt = require('jsonwebtoken');
-const { User, Token } = require('../models');
-
-const auth = async() => {
+const auth = async(req, res, next) => {
     try {
-        const token = req.headers.token;
-        const payload = jwt.verify(token, 'patata123');
-        const user = await UserModel.findOne({
+        const token = req.headers.authorization;
+        jwt.verify(token, 'patata123');
+        const user = await User.findOne({
             tokens: token,
         })
         if (!user) {
-            return resizeBy.status(401).send({ 
+            return res.status(401).send({
                 message: 'You are not authorized'
-            })
+            });
         }
         req.user = user;
         next();
@@ -54,7 +48,9 @@ const auth = async() => {
         return res.status(401).send({
             message: 'You are not authorized',
             error
-        })
+        });
     }
 }
-*/
+
+module.exports = auth;
+

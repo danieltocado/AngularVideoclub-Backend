@@ -1,10 +1,11 @@
 const { Movie } = require('../models');
+const { Op } = require("sequelize")
 
 const MovieController = {
     async getAllMovies(req,res) {
         try {
             const movies = await Movie.findAll({
-                limit: 24
+                limit: 26
             })
             res.status(200).send(movies)
             
@@ -16,12 +17,12 @@ const MovieController = {
     getPage(req, res) {
         const { page } = req.params;
         const skip = (page - 1) * 20
-        Movie.find()
-            .skip(skip).limit(20)
+        Movie.findAll(offset(skip).limit(20))
+            
             .then(movies => res.send(movies))
             .catch(error => {
                 console.error(error);
-                res.status(500).send({ message : 'There was a problem trying to get the movies.'})
+                res.status(500).send({ message : 'There was a problem trying to get the pages.'})
             })
     },
     async searchtitle(req,res) {
@@ -29,7 +30,9 @@ const MovieController = {
             const { title } = req.params
             const movie = await Movie.findAll({
                 where : {
-                    title : title
+                    title: {
+                        [Op.regexp]:`.*${title}.*`
+                        }
                 }
             });
             if (movie === null){
@@ -57,6 +60,34 @@ const MovieController = {
         } catch (error) {
             console.log(error)
             res.status(500).send({ message : 'There was a problem trying to update the movie.'})
+        }
+    }, 
+    async mostPopular(req,res) {
+        try {
+            const popular = await Movie.findAll({
+                where : {
+                    popularity:{
+                        [Op.gte] : 50
+                    }
+                }
+            });
+            res.status(200).send(popular)
+        } catch (error) {
+            res.status(500).send({ message : 'There was a problem trying to find the movies.'})
+        }
+    },
+    async lastMovies(req,res) {
+        try {
+            const lastMovies = await Movie.findAll({
+                where : {
+                    release_date:{
+                        [Op.between]: ['2018-01-01', '2020-07-04']
+                    }
+                }
+            });
+            res.status(200).send(lastMovies)
+        } catch (error) {
+            res.status(500).send({ message : 'There was a problem trying to find the movies.'});
         }
     }
 }

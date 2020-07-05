@@ -76,10 +76,10 @@ const UserController = {
     },
     async logout(req, res) {
         try {
-            const { id } = req.user.id
+            const id = req.user.id
             const user = await User.destroy({
                 where : {
-                    tokens : req.headers.authorization
+                    token : req.headers.authorization
                 }
             })
             res.status(200).send({ message : 'Succesfully logged out.'})
